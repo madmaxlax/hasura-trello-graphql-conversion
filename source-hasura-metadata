@@ -1,0 +1,72 @@
+{
+  "resource_version": 5,
+  "metadata": {
+    "version": 3,
+    "sources": [],
+    "remote_schemas": [
+      {
+        "name": "SourceGQL",
+        "definition": {
+          "url": "https://light-sawfly-12.hasura.app/v1/graphql",
+          "timeout_seconds": 60,
+          "customization": {},
+          "headers": [
+            {
+              "name": "x-hasura-admin-secret",
+              "value_from_env": "SOURCE_HASURA_ADMIN_SECRET"
+            }
+          ]
+        },
+        "comment": "Our Hasura instance with our actions already set up",
+        "remote_relationships": [
+          {
+            "relationships": [
+              {
+                "definition": {
+                  "to_remote_schema": {
+                    "lhs_fields": [
+                      "id"
+                    ],
+                    "remote_field": {
+                      "getBoardsIdLists": {
+                        "arguments": {
+                          "id": "$id"
+                        }
+                      }
+                    },
+                    "remote_schema": "SourceGQL"
+                  }
+                },
+                "name": "ListsBelongingToBoards"
+              }
+            ],
+            "type_name": "ActionBoard"
+          },
+          {
+            "relationships": [
+              {
+                "definition": {
+                  "to_remote_schema": {
+                    "lhs_fields": [
+                      "id"
+                    ],
+                    "remote_field": {
+                      "getListsIdCards": {
+                        "arguments": {
+                          "id": "$id"
+                        }
+                      }
+                    },
+                    "remote_schema": "SourceGQL"
+                  }
+                },
+                "name": "CardsBelongingToLists"
+              }
+            ],
+            "type_name": "TrelloList"
+          }
+        ]
+      }
+    ]
+  }
+}

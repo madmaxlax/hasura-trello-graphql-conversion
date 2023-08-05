@@ -1,72 +1,1293 @@
 {
-  "resource_version": 5,
+  "resource_version": 27,
   "metadata": {
     "version": 3,
     "sources": [],
-    "remote_schemas": [
+    "actions": [
       {
-        "name": "SourceGQL",
+        "name": "getBoardsIdCards",
         "definition": {
-          "url": "https://light-sawfly-12.hasura.app/v1/graphql",
-          "timeout_seconds": 60,
-          "customization": {},
+          "handler": "https://api.trello.com/1",
+          "output_type": "[ActionCard]!",
+          "forward_client_headers": true,
           "headers": [
             {
-              "name": "x-hasura-admin-secret",
-              "value_from_env": "SOURCE_HASURA_ADMIN_SECRET"
+              "name": "Authorization",
+              "value_from_env": "TRELLO_AUTHORIZATION_HEADER_SECRET"
+            }
+          ],
+          "arguments": [
+            {
+              "name": "id",
+              "type": "String!"
+            }
+          ],
+          "request_transform": {
+            "method": "GET",
+            "query_params": {},
+            "request_headers": {
+              "add_headers": {},
+              "remove_headers": [
+                "content-type"
+              ]
+            },
+            "template_engine": "Kriti",
+            "url": "{{$base_url}}/boards/{{$body.input.id}}/cards",
+            "version": 2
+          },
+          "type": "query"
+        },
+        "comment": "Get all of the open Cards on a Board."
+      },
+      {
+        "name": "getBoardsIdLists",
+        "definition": {
+          "handler": "https://api.trello.com/1",
+          "output_type": "[TrelloList]",
+          "forward_client_headers": true,
+          "headers": [
+            {
+              "name": "Authorization",
+              "value_from_env": "TRELLO_AUTHORIZATION_HEADER_SECRET"
+            }
+          ],
+          "arguments": [
+            {
+              "name": "cardFields",
+              "type": "String"
+            },
+            {
+              "name": "cards",
+              "type": "Cards"
+            },
+            {
+              "name": "fields",
+              "type": "String"
+            },
+            {
+              "name": "filter",
+              "type": "Filter3"
+            },
+            {
+              "name": "id",
+              "type": "String!"
+            }
+          ],
+          "request_transform": {
+            "method": "GET",
+            "query_params": {
+              "card_fields": "{{$body.input?.card_fields}}",
+              "cards": "{{$body.input?.cards}}",
+              "fields": "{{$body.input?.fields}}",
+              "filter": "{{$body.input?.filter}}"
+            },
+            "request_headers": {
+              "add_headers": {},
+              "remove_headers": [
+                "content-type"
+              ]
+            },
+            "template_engine": "Kriti",
+            "url": "{{$base_url}}/boards/{{$body.input.id}}/lists",
+            "version": 2
+          },
+          "type": "query"
+        },
+        "comment": "Get the Lists on a Board"
+      },
+      {
+        "name": "getCardsId",
+        "definition": {
+          "handler": "https://api.trello.com/1",
+          "output_type": "ActionCard",
+          "forward_client_headers": true,
+          "headers": [
+            {
+              "name": "Authorization",
+              "value_from_env": "TRELLO_AUTHORIZATION_HEADER_SECRET"
+            }
+          ],
+          "arguments": [
+            {
+              "name": "actions",
+              "type": "String"
+            },
+            {
+              "name": "attachmentFields",
+              "type": "String"
+            },
+            {
+              "name": "attachments",
+              "type": "JSON"
+            },
+            {
+              "name": "board",
+              "type": "Boolean"
+            },
+            {
+              "name": "boardFields",
+              "type": "String"
+            },
+            {
+              "name": "checkItemStates",
+              "type": "Boolean"
+            },
+            {
+              "name": "checklistFields",
+              "type": "String"
+            },
+            {
+              "name": "checklists",
+              "type": "String"
+            },
+            {
+              "name": "customFieldItems",
+              "type": "Boolean"
+            },
+            {
+              "name": "fields",
+              "type": "String"
+            },
+            {
+              "name": "id",
+              "type": "String!"
+            },
+            {
+              "name": "list",
+              "type": "Boolean"
+            },
+            {
+              "name": "memberFields",
+              "type": "String"
+            },
+            {
+              "name": "members",
+              "type": "Boolean"
+            },
+            {
+              "name": "membersVoted",
+              "type": "Boolean"
+            },
+            {
+              "name": "memberVotedFields",
+              "type": "String"
+            },
+            {
+              "name": "pluginData",
+              "type": "Boolean"
+            },
+            {
+              "name": "stickerFields",
+              "type": "String"
+            },
+            {
+              "name": "stickers",
+              "type": "Boolean"
+            }
+          ],
+          "request_transform": {
+            "method": "GET",
+            "query_params": {
+              "actions": "{{$body.input?.actions}}",
+              "attachment_fields": "{{$body.input?.attachment_fields}}",
+              "attachments": "{{$body.input?.attachments}}",
+              "board": "{{$body.input?.board}}",
+              "board_fields": "{{$body.input?.board_fields}}",
+              "checkItemStates": "{{$body.input?.checkItemStates}}",
+              "checklist_fields": "{{$body.input?.checklist_fields}}",
+              "checklists": "{{$body.input?.checklists}}",
+              "customFieldItems": "{{$body.input?.customFieldItems}}",
+              "fields": "{{$body.input?.fields}}",
+              "list": "{{$body.input?.list}}",
+              "memberVoted_fields": "{{$body.input?.memberVoted_fields}}",
+              "member_fields": "{{$body.input?.member_fields}}",
+              "members": "{{$body.input?.members}}",
+              "membersVoted": "{{$body.input?.membersVoted}}",
+              "pluginData": "{{$body.input?.pluginData}}",
+              "sticker_fields": "{{$body.input?.sticker_fields}}",
+              "stickers": "{{$body.input?.stickers}}"
+            },
+            "request_headers": {
+              "add_headers": {},
+              "remove_headers": [
+                "content-type"
+              ]
+            },
+            "template_engine": "Kriti",
+            "url": "{{$base_url}}/cards/{{$body.input.id}}",
+            "version": 2
+          },
+          "type": "query"
+        },
+        "comment": "Get a card by its ID"
+      },
+      {
+        "name": "getListsIdCards",
+        "definition": {
+          "handler": "https://api.trello.com/1",
+          "output_type": "[ActionCard]",
+          "forward_client_headers": true,
+          "headers": [
+            {
+              "name": "Authorization",
+              "value_from_env": "TRELLO_AUTHORIZATION_HEADER_SECRET"
+            }
+          ],
+          "arguments": [
+            {
+              "name": "id",
+              "type": "String!"
+            }
+          ],
+          "request_transform": {
+            "method": "GET",
+            "query_params": {},
+            "request_headers": {
+              "add_headers": {},
+              "remove_headers": [
+                "content-type"
+              ]
+            },
+            "template_engine": "Kriti",
+            "url": "{{$base_url}}/lists/{{$body.input.id}}/cards",
+            "version": 2
+          },
+          "type": "query"
+        },
+        "comment": "List the cards in a list"
+      },
+      {
+        "name": "getMembersIdBoards",
+        "definition": {
+          "handler": "https://api.trello.com/1",
+          "output_type": "[ActionBoard]",
+          "forward_client_headers": true,
+          "headers": [
+            {
+              "name": "Authorization",
+              "value_from_env": "TRELLO_AUTHORIZATION_HEADER_SECRET"
+            }
+          ],
+          "arguments": [
+            {
+              "name": "fields",
+              "type": "Fields"
+            },
+            {
+              "name": "filter",
+              "type": "Filter7"
+            },
+            {
+              "name": "id",
+              "type": "String!"
+            },
+            {
+              "name": "lists",
+              "type": "Lists"
+            },
+            {
+              "name": "organization",
+              "type": "Boolean"
+            },
+            {
+              "name": "organizationFields",
+              "type": "OrganizationFields"
+            }
+          ],
+          "request_transform": {
+            "method": "GET",
+            "query_params": {
+              "fields": "{{$body.input?.fields}}",
+              "filter": "{{$body.input?.filter}}",
+              "lists": "{{$body.input?.lists}}",
+              "organization": "{{$body.input?.organization}}",
+              "organization_fields": "{{$body.input?.organization_fields}}"
+            },
+            "request_headers": {
+              "add_headers": {},
+              "remove_headers": [
+                "content-type"
+              ]
+            },
+            "template_engine": "Kriti",
+            "url": "{{$base_url}}/members/{{$body.input.id}}/boards",
+            "version": 2
+          },
+          "type": "query"
+        },
+        "comment": "Lists the boards that the user is a member of."
+      }
+    ],
+    "custom_types": {
+      "objects": [
+        {
+          "name": "ActionBoard",
+          "fields": [
+            {
+              "name": "closed",
+              "type": "Boolean"
+            },
+            {
+              "name": "creationMethod",
+              "type": "String"
+            },
+            {
+              "name": "dateLastActivity",
+              "type": "String"
+            },
+            {
+              "name": "dateLastView",
+              "type": "String"
+            },
+            {
+              "name": "datePluginDisable",
+              "type": "String"
+            },
+            {
+              "name": "desc",
+              "type": "String"
+            },
+            {
+              "name": "descData",
+              "type": "String"
+            },
+            {
+              "name": "enterpriseOwned",
+              "type": "Boolean"
+            },
+            {
+              "name": "id",
+              "type": "String!"
+            },
+            {
+              "name": "idMemberCreator",
+              "type": "String"
+            },
+            {
+              "name": "idOrganization",
+              "type": "String"
+            },
+            {
+              "name": "idTags",
+              "type": "String"
+            },
+            {
+              "name": "ixUpdate",
+              "type": "Int"
+            },
+            {
+              "name": "labelNames",
+              "type": "LabelNames"
+            },
+            {
+              "name": "limits",
+              "type": "Limits2"
+            },
+            {
+              "name": "memberships",
+              "type": "String"
+            },
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "pinned",
+              "type": "Boolean"
+            },
+            {
+              "name": "powerUps",
+              "type": "String"
+            },
+            {
+              "name": "prefs",
+              "type": "Prefs"
+            },
+            {
+              "name": "shortLink",
+              "type": "String"
+            },
+            {
+              "name": "shortUrl",
+              "type": "String"
+            },
+            {
+              "name": "starred",
+              "type": "Boolean"
+            },
+            {
+              "name": "subscribed",
+              "type": "Boolean"
+            },
+            {
+              "name": "templateGallery",
+              "type": "String"
+            },
+            {
+              "name": "url",
+              "type": "String"
             }
           ]
         },
-        "comment": "Our Hasura instance with our actions already set up",
-        "remote_relationships": [
-          {
-            "relationships": [
-              {
-                "definition": {
-                  "to_remote_schema": {
-                    "lhs_fields": [
-                      "id"
-                    ],
-                    "remote_field": {
-                      "getBoardsIdLists": {
-                        "arguments": {
-                          "id": "$id"
-                        }
-                      }
-                    },
-                    "remote_schema": "SourceGQL"
-                  }
-                },
-                "name": "ListsBelongingToBoards"
-              }
-            ],
-            "type_name": "ActionBoard"
-          },
-          {
-            "relationships": [
-              {
-                "definition": {
-                  "to_remote_schema": {
-                    "lhs_fields": [
-                      "id"
-                    ],
-                    "remote_field": {
-                      "getListsIdCards": {
-                        "arguments": {
-                          "id": "$id"
-                        }
-                      }
-                    },
-                    "remote_schema": "SourceGQL"
-                  }
-                },
-                "name": "CardsBelongingToLists"
-              }
-            ],
-            "type_name": "TrelloList"
-          }
-        ]
-      }
-    ]
+        {
+          "name": "Attachments",
+          "fields": [
+            {
+              "name": "perBoard",
+              "type": "LimitsObject"
+            }
+          ]
+        },
+        {
+          "name": "ImageDescriptor",
+          "fields": [
+            {
+              "name": "height",
+              "type": "Int"
+            },
+            {
+              "name": "url",
+              "type": "String"
+            },
+            {
+              "name": "width",
+              "type": "Int"
+            }
+          ]
+        },
+        {
+          "name": "LabelNames",
+          "fields": [
+            {
+              "name": "black",
+              "type": "String"
+            },
+            {
+              "name": "blue",
+              "type": "String"
+            },
+            {
+              "name": "green",
+              "type": "String"
+            },
+            {
+              "name": "lime",
+              "type": "String"
+            },
+            {
+              "name": "orange",
+              "type": "String"
+            },
+            {
+              "name": "pink",
+              "type": "String"
+            },
+            {
+              "name": "purple",
+              "type": "String"
+            },
+            {
+              "name": "red",
+              "type": "String"
+            },
+            {
+              "name": "sky",
+              "type": "String"
+            },
+            {
+              "name": "yellow",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Limits2",
+          "fields": [
+            {
+              "name": "attachments",
+              "type": "Attachments"
+            }
+          ]
+        },
+        {
+          "name": "LimitsObject",
+          "fields": [
+            {
+              "name": "disableAt",
+              "type": "Float"
+            },
+            {
+              "name": "status",
+              "type": "Status"
+            },
+            {
+              "name": "warnAt",
+              "type": "Float"
+            }
+          ]
+        },
+        {
+          "name": "Prefs",
+          "fields": [
+            {
+              "name": "background",
+              "type": "String"
+            },
+            {
+              "name": "backgroundBottomColor",
+              "type": "String"
+            },
+            {
+              "name": "backgroundBrightness",
+              "type": "String"
+            },
+            {
+              "name": "backgroundImage",
+              "type": "String"
+            },
+            {
+              "name": "backgroundImageScaled",
+              "type": "[ImageDescriptor]"
+            },
+            {
+              "name": "backgroundTile",
+              "type": "Boolean"
+            },
+            {
+              "name": "backgroundTopColor",
+              "type": "String"
+            },
+            {
+              "name": "calendarFeedEnabled",
+              "type": "Boolean"
+            },
+            {
+              "name": "canBeEnterprise",
+              "type": "Boolean"
+            },
+            {
+              "name": "canBeOrg",
+              "type": "Boolean"
+            },
+            {
+              "name": "canBePrivate",
+              "type": "Boolean"
+            },
+            {
+              "name": "canBePublic",
+              "type": "Boolean"
+            },
+            {
+              "name": "canInvite",
+              "type": "Boolean"
+            },
+            {
+              "name": "cardAging",
+              "type": "CardAging"
+            },
+            {
+              "name": "cardCovers",
+              "type": "Boolean"
+            },
+            {
+              "name": "comments",
+              "type": "String"
+            },
+            {
+              "name": "hideVotes",
+              "type": "Boolean"
+            },
+            {
+              "name": "invitations",
+              "type": "Invitations"
+            },
+            {
+              "name": "isTemplate",
+              "type": "Boolean"
+            },
+            {
+              "name": "permissionLevel",
+              "type": "PermissionLevel"
+            },
+            {
+              "name": "selfJoin",
+              "type": "Boolean"
+            },
+            {
+              "name": "voting",
+              "type": "Voting"
+            }
+          ]
+        },
+        {
+          "name": "ActionCard",
+          "fields": [
+            {
+              "name": "address",
+              "type": "String"
+            },
+            {
+              "name": "badges",
+              "type": "Badges"
+            },
+            {
+              "name": "checkItemStates",
+              "type": "[String]"
+            },
+            {
+              "name": "closed",
+              "type": "Boolean"
+            },
+            {
+              "name": "coordinates",
+              "type": "String"
+            },
+            {
+              "name": "cover",
+              "type": "Cover"
+            },
+            {
+              "name": "creationMethod",
+              "type": "String"
+            },
+            {
+              "name": "dateLastActivity",
+              "type": "String"
+            },
+            {
+              "name": "desc",
+              "type": "String"
+            },
+            {
+              "name": "descData",
+              "type": "DescData"
+            },
+            {
+              "name": "due",
+              "type": "String"
+            },
+            {
+              "name": "dueReminder",
+              "type": "String"
+            },
+            {
+              "name": "email",
+              "type": "String"
+            },
+            {
+              "name": "id",
+              "type": "String"
+            },
+            {
+              "name": "idAttachmentCover",
+              "type": "String"
+            },
+            {
+              "name": "idBoard",
+              "type": "String"
+            },
+            {
+              "name": "idChecklists",
+              "type": "[JSON]"
+            },
+            {
+              "name": "idLabels",
+              "type": "[JSON]"
+            },
+            {
+              "name": "idList",
+              "type": "String"
+            },
+            {
+              "name": "idMembers",
+              "type": "[String]"
+            },
+            {
+              "name": "idMembersVoted",
+              "type": "[String]"
+            },
+            {
+              "name": "idShort",
+              "type": "Int"
+            },
+            {
+              "name": "labels",
+              "type": "[String]"
+            },
+            {
+              "name": "limits",
+              "type": "Limits2"
+            },
+            {
+              "name": "locationName",
+              "type": "String"
+            },
+            {
+              "name": "manualCoverAttachment",
+              "type": "Boolean"
+            },
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "pos",
+              "type": "Float"
+            },
+            {
+              "name": "shortLink",
+              "type": "String"
+            },
+            {
+              "name": "shortUrl",
+              "type": "String"
+            },
+            {
+              "name": "subscribed",
+              "type": "Boolean"
+            },
+            {
+              "name": "url",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "AttachmentsByType",
+          "fields": [
+            {
+              "name": "trello",
+              "type": "Trello"
+            }
+          ]
+        },
+        {
+          "name": "Badges",
+          "fields": [
+            {
+              "name": "attachments",
+              "type": "Int"
+            },
+            {
+              "name": "attachmentsByType",
+              "type": "AttachmentsByType"
+            },
+            {
+              "name": "checkItems",
+              "type": "Int"
+            },
+            {
+              "name": "checkItemsChecked",
+              "type": "Int"
+            },
+            {
+              "name": "comments",
+              "type": "Int"
+            },
+            {
+              "name": "description",
+              "type": "Boolean"
+            },
+            {
+              "name": "due",
+              "type": "String"
+            },
+            {
+              "name": "dueComplete",
+              "type": "Boolean"
+            },
+            {
+              "name": "fogbugz",
+              "type": "String"
+            },
+            {
+              "name": "location",
+              "type": "Boolean"
+            },
+            {
+              "name": "start",
+              "type": "String"
+            },
+            {
+              "name": "subscribed",
+              "type": "Boolean"
+            },
+            {
+              "name": "viewingMemberVoted",
+              "type": "Boolean"
+            },
+            {
+              "name": "votes",
+              "type": "Int"
+            }
+          ]
+        },
+        {
+          "name": "Cover",
+          "fields": [
+            {
+              "name": "brightness",
+              "type": "Brightness"
+            },
+            {
+              "name": "color",
+              "type": "Color"
+            },
+            {
+              "name": "idAttachment",
+              "type": "String"
+            },
+            {
+              "name": "idUploadedBackground",
+              "type": "Boolean"
+            },
+            {
+              "name": "isTemplate",
+              "type": "Boolean"
+            },
+            {
+              "name": "size",
+              "type": "Size"
+            }
+          ]
+        },
+        {
+          "name": "DescData",
+          "fields": [
+            {
+              "name": "emoji",
+              "type": "JSON"
+            }
+          ]
+        },
+        {
+          "name": "Trello",
+          "fields": [
+            {
+              "name": "board",
+              "type": "Float"
+            },
+            {
+              "name": "card",
+              "type": "Float"
+            }
+          ]
+        },
+        {
+          "name": "TrelloList",
+          "fields": [
+            {
+              "name": "closed",
+              "type": "Boolean"
+            },
+            {
+              "name": "id",
+              "type": "String"
+            },
+            {
+              "name": "idBoard",
+              "type": "String"
+            },
+            {
+              "name": "limits",
+              "type": "Limits2"
+            },
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "pos",
+              "type": "Float"
+            },
+            {
+              "name": "softLimit",
+              "type": "String"
+            },
+            {
+              "name": "subscribed",
+              "type": "Boolean"
+            }
+          ]
+        }
+      ],
+      "scalars": [
+        {
+          "name": "JSON"
+        }
+      ],
+      "enums": [
+        {
+          "name": "CardAging",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "pirate"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "regular"
+            }
+          ]
+        },
+        {
+          "name": "Fields",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "id"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "name"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "desc"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "descData"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "closed"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "idMemberCreator"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "idOrganization"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "pinned"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "url"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "shortUrl"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "prefs"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "labelNames"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "starred"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "limits"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "memberships"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "enterpriseOwned"
+            }
+          ]
+        },
+        {
+          "name": "Filter7",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "all"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "closed"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "members"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "open"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "organization"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "public"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "starred"
+            }
+          ]
+        },
+        {
+          "name": "Invitations",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "admins"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "members"
+            }
+          ]
+        },
+        {
+          "name": "Lists",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "all"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "closed"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "none"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "open"
+            }
+          ]
+        },
+        {
+          "name": "OrganizationFields",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "id"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "name"
+            }
+          ]
+        },
+        {
+          "name": "PermissionLevel",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "org"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "board"
+            }
+          ]
+        },
+        {
+          "name": "Status",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "ok"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "warning"
+            }
+          ]
+        },
+        {
+          "name": "Voting",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "disabled"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "enabled"
+            }
+          ]
+        },
+        {
+          "name": "Brightness",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "light"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "dark"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "yellow"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "purple"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "blue"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "red"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "green"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "orange"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "black"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "sky"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "pink"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "lime"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "normal"
+            }
+          ]
+        },
+        {
+          "name": "Cards",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "all"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "closed"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "none"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "open"
+            }
+          ]
+        },
+        {
+          "name": "Filter3",
+          "values": [
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "all"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "closed"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "none"
+            },
+            {
+              "description": null,
+              "is_deprecated": null,
+              "value": "open"
+            }
+          ]
+        }
+      ]
+    }
   }
 }
